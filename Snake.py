@@ -166,7 +166,7 @@ def show_score(points):
               align="center", font=("Courier", 24, "normal"))
 
 
-def write_score(points):
+def write_score_to_db(points):
 
     # Input name window-mode
     while True:
@@ -209,12 +209,11 @@ while True:
         for segment in segments:
             segment.goto(-310, -310)
 
-        write_score(high_score)
+        # Write score to DB
+        write_score_to_db(high_score)
 
         # Showing score
-        show_score(score)
         print_score_table(score)
-        show_score(score)
 
         # Clear the segments list
         segments.clear()
@@ -223,6 +222,9 @@ while True:
         score = 0
         high_score = 0
 
+        # Print clear score
+        show_score(score)
+
         # Reset the delay
         delay = 0.1
 
@@ -230,17 +232,17 @@ while True:
     if head.distance(food) < 20:
         # Move the food to a random spot
 
-        # Мій велосипед
+        # My idea
         x = [i * 20 for i in range(-14, 15)]
         y = [i * 20 for i in range(-14, 15)]
         food.goto(random.choice(x), random.choice(y))
 
-        # Оригінал
+        # Original
         # x = random.randint(-290, 290)
         # y = random.randint(-290, 290)
         # food.goto(x, y)
 
-        # Запропонований варіант з відео
+        # Suggested in video
         # x = random.randrange(-280, 280, 20)
         # y = random.randrange(-280, 280, 20)
         # food.goto(x, y)
@@ -289,20 +291,21 @@ while True:
             for element in segments:
                 element.goto(1000, 1000)
 
-            # Clear the segments list
-            segments.clear()
-
             # Write score to DB
-            write_score(high_score)
+            write_score_to_db(high_score)
 
             # Update the score display
-            show_score(score)
             print_score_table(score)
-            show_score(score)
+
+            # Clear the segments list
+            segments.clear()
 
             # Reset the score
             score = 0
             high_score = 0
+
+            # Print clear score
+            show_score(score)
 
             # Reset the delay
             delay = 0.1
