@@ -102,16 +102,33 @@ def go_right():
 
 
 # Keyboard bindings
-wn.listen()
-wn.onkeypress(go_up, "w")
-wn.onkeypress(go_down, "s")
-wn.onkeypress(go_left, "a")
-wn.onkeypress(go_right, "d")
+while True:
+    scheme = pen.screen.textinput("Control scheme",
+                                  "What type of control scheme do you want to chose?\n"
+                                  "Type 'wasd' or 'arrows'")
 
-# wn.onkeypress(go_up, "Up")
-# wn.onkeypress(go_down, "Down")
-# wn.onkeypress(go_left, "Left")
-# wn.onkeypress(go_right, "Right")
+    if scheme == "wasd":
+        up = "w"
+        down = "s"
+        left = "a"
+        right = "d"
+        print("You chose 'wasd' scheme")
+        break
+    elif scheme == "arrows":
+        up = "Up"
+        down = "Down"
+        left = "Left"
+        right = "Right"
+        print("You chose 'arrow' scheme")
+        break
+    else:
+        print("Your command is not recognized")
+
+wn.listen()
+wn.onkeypress(go_up, up)
+wn.onkeypress(go_down, down)
+wn.onkeypress(go_left, left)
+wn.onkeypress(go_right, right)
 
 
 def move():
