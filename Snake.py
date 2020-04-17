@@ -8,6 +8,8 @@ delay = 0.1
 
 # Score on the start game
 score = 0
+eaten = 0
+goal = 10
 high_score = 0
 db = CreateDB()
 db.create()
@@ -20,7 +22,7 @@ segments = []
 wn = turtle.Screen()
 wn.title("Snake Game")
 wn.bgcolor("black")
-wn.setup(width=625, height=650)
+wn.setup(width=650, height=650)
 wn.tracer(0)  # Turns off the screen updates
 
 
@@ -51,15 +53,14 @@ pen.shape("square")
 pen.color("white")
 pen.penup()
 pen.hideturtle()
-pen.goto(0, 0)
-pen.write("Hi! This is a Snake game\n"
-          "To start playing, press some\n"
-          "of these key-buttons:\n\n"
-          "W - up;\n"
-          "S - down;\n"
-          "A - left;\n"
-          "D - right.\n",
-          align="center", font=("Courier", 24, "normal"))
+pen.goto(0, -130)
+pen.write("Hi! This is a Snake game\n\n"
+          "Try to eat the maximum amount\n"
+          "of turtles.\n\n"
+          "Every eaten 10 turtles\n"
+          "you will earn + 100 points.\n\n"
+          "Press key-buttons to start game.",
+          align="center", font=("Courier", 20, "normal"))
 
 # Snake head
 head = turtle.Turtle()
@@ -103,9 +104,9 @@ def go_right():
 
 # Keyboard bindings
 while True:
-    scheme = pen.screen.textinput("Control scheme",
-                                  "What type of control scheme do you want to chose?\n"
-                                  "Type 'wasd' or 'arrows'")
+    scheme = str.lower(pen.screen.textinput("Control scheme",
+                                            "What type of control scheme do you want to chose?\n"
+                                            "Type 'wasd' or 'arrow'"))
 
     if scheme == "wasd":
         up = "w"
@@ -114,7 +115,7 @@ while True:
         right = "d"
         print("You chose 'wasd' scheme")
         break
-    elif scheme == "arrows":
+    elif scheme == "arrow":
         up = "Up"
         down = "Down"
         left = "Left"
@@ -147,7 +148,6 @@ def move():
 
 # Score printing
 def print_score_table(points):
-
     # Select latest added Player score from DB
     # If database is not empty:
     if len(db.read_db()) > 0:
@@ -168,7 +168,7 @@ def print_score_table(points):
         print_result += str(f"{i[0]:<5} {i[1]:<12.12} {i[2]:<5}\n")
 
     # Show last player result
-    print_result += str(f"{'.'*20:^24}\n{last_player[0]:<5} {last_player[1]:<12.12} {last_player[2]:<5}\n")
+    print_result += str(f"{'.' * 20:^24}\n{last_player[0]:<5} {last_player[1]:<12.12} {last_player[2]:<5}\n")
 
     pen.clear()  # clear field
     pen.goto(0, -288)
@@ -179,12 +179,12 @@ def print_score_table(points):
 def show_score(points):
     pen.clear()
     pen.goto(0, 290)
-    pen.write(f"Score: {points}  High Score: {db.read_high_db()[0][0]}",
-              align="center", font=("Courier", 24, "normal"))
+    pen.write(f"Score: {points} High Score: {db.read_high_db()[0][0]}"
+              f" Eaten: {eaten} Goal: {goal}",
+              align="center", font=("Courier", 18, "normal"))
 
 
 def write_score_to_db(points):
-
     # Input name window-mode
     while True:
 
@@ -238,6 +238,8 @@ while True:
         # Reset the score
         score = 0
         high_score = 0
+        eaten = 0
+        goal = 10
 
         # Print clear score
         show_score(score)
@@ -278,7 +280,13 @@ while True:
         delay -= 0.001  # Also, you can increase game speed!
 
         # Increase the score
-        score += 1
+        score += 10
+
+        eaten += 1
+
+        if eaten % 10 == 0:
+            goal += 10
+            score += 100
 
         if score > high_score:
             high_score = score
@@ -320,6 +328,8 @@ while True:
             # Reset the score
             score = 0
             high_score = 0
+            eaten = 0
+            goal = 10
 
             # Print clear score
             show_score(score)
