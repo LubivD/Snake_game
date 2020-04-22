@@ -21,7 +21,7 @@ segments = []
 # Set up the screen
 wn = turtle.Screen()
 wn.title("Snake Game")
-wn.bgcolor("black")
+wn.bgcolor("#304251")
 wn.setup(width=650, height=650)
 wn.tracer(0)  # Turns off the screen updates
 
@@ -36,8 +36,8 @@ def boarder():
 
 
 board = turtle.Turtle()
-board.color('#002014')
-board.pencolor("orange")
+board.color('#3E5363')
+board.pencolor("#B8CEE0")
 board.pensize(1)
 board.speed(0)
 board.setpos(-290, -290)
@@ -50,7 +50,7 @@ pen = turtle.Turtle()
 pen.screen = turtle.Screen()
 pen.speed(0)
 pen.shape("square")
-pen.color("white")
+pen.color("#B8CEE0")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, -130)
@@ -60,13 +60,13 @@ pen.write("Hi! This is a Snake game\n\n"
           "Every eaten 10 turtles\n"
           "you will earn + 100 points.\n\n"
           "Press key-buttons to start game.",
-          align="center", font=("Courier", 20, "normal"))
+          align="center", font=("Courier", 20, "bold"))
 
 # Snake head
 head = turtle.Turtle()
 head.speed(0)
 head.shape("square")
-head.color("purple")
+head.color("#55D43F")
 head.penup()
 head.setpos(0, 0)
 head.direction = "stop"
@@ -76,7 +76,8 @@ food = turtle.Turtle()
 food.speed(0)
 food.shape("turtle")
 colors = ['pink', 'red', 'blue', 'purple', 'orange', 'yellow']
-food.color('white', random.choice(colors))
+# food.color('white', random.choice(colors))
+food.color('#70B7BA')
 food.penup()
 food.goto(0, 100)
 
@@ -106,21 +107,22 @@ def go_right():
 while True:
     scheme = str.lower(pen.screen.textinput("Control scheme",
                                             "What type of control scheme do you want to chose?\n"
-                                            "Type 'wasd' or 'arrow'"))
+                                            "Type '1' for 'WASD' or\n"
+                                            "          '2' for 'Arrow'"))
 
-    if scheme == "wasd":
+    if scheme == "1":
         up = "w"
         down = "s"
         left = "a"
         right = "d"
-        print("You chose 'wasd' scheme")
+        print("You chose 'WASD' scheme")
         break
-    elif scheme == "arrow":
+    elif scheme == "2":
         up = "Up"
         down = "Down"
         left = "Left"
         right = "Right"
-        print("You chose 'arrow' scheme")
+        print("You chose 'Arrow' scheme")
         break
     else:
         print("Your command is not recognized")
@@ -172,7 +174,7 @@ def print_score_table(points):
 
     pen.clear()  # clear field
     pen.goto(0, -288)
-    pen.write(print_result, align="center", font=("Courier", 24, "normal"))
+    pen.write(print_result, align="center", font=("Courier", 24, "bold"))
     time.sleep(5)
 
 
@@ -181,7 +183,7 @@ def show_score(points):
     pen.goto(0, 290)
     pen.write(f"Score: {points} High Score: {db.read_high_db()[0][0]}"
               f" Eaten: {eaten} Goal: {goal}",
-              align="center", font=("Courier", 18, "normal"))
+              align="center", font=("Courier", 18, "bold"))
 
 
 def write_score_to_db(points):
@@ -207,8 +209,8 @@ def write_score_to_db(points):
     # name = str(input("Type your name. Use less then 12 letters, please.\n"))
     # data_score = WriteDB(str(name), points)
     # data_score.write_to_db()
-    # Without wn.listen() window mode doesn't work
 
+    # Without wn.listen() window mode doesn't work
     wn.listen()
 
 
@@ -266,13 +268,16 @@ while True:
         # y = random.randrange(-280, 280, 20)
         # food.goto(x, y)
 
-        food.color(random.choice(colors), random.choice(colors))
+        # Need to check colour food changing
+        # food.color(random.choice(colors), random.choice(colors))
+        # food.color('#70B7BA')
 
         # Add a segment
         new_segment = turtle.Turtle()
         new_segment.speed(0)
         new_segment.shape("square")
-        new_segment.color('grey', random.choice(colors))
+        # new_segment.color('grey', random.choice(colors))
+        new_segment.color('#304251', '#67FF4D')
         new_segment.penup()
         segments.append(new_segment)
 
