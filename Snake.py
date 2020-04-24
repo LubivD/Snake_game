@@ -45,6 +45,25 @@ board.speed(0)
 board.hideturtle()
 boarder()
 
+# Snake head
+head = turtle.Turtle()
+head.speed(0)
+head.shape("square")
+head.color("#55D43F")
+head.penup()
+head.setpos(80, 0)
+head.direction = "stop"
+
+# Snake food
+food = turtle.Turtle()
+food.speed(0)
+food.shape("turtle")
+# colors = ['pink', 'red', 'blue', 'purple', 'orange', 'yellow']
+# food.color('white', random.choice(colors))
+food.color('#70B7BA')
+food.penup()
+food.goto(80, 93)
+
 # Write greeting & Score
 pen = turtle.Turtle()
 pen.screen = turtle.Screen()
@@ -53,33 +72,19 @@ pen.shape("square")
 pen.color("#B8CEE0")
 pen.penup()
 pen.hideturtle()
-pen.goto(0, -130)
+pen.goto(0, -235)
 pen.write("Hi! This is a Snake game\n\n"
           "Try to eat the maximum amount\n"
           "of turtles.\n\n"
-          "Every eaten 10 turtles\n"
+          "This is food      ->\n"
+          "\n\n"
+          "This is the snake ->\n\n"
+          "With every eaten 10 turtles\n"
           "you will earn + 100 points.\n\n"
-          "Press key-buttons to start game.",
+          "Press key-button (W or arrow Up)\n"
+          "to move the snake up\n"
+          "and to start the game.",
           align="center", font=("Courier", 20, "bold"))
-
-# Snake head
-head = turtle.Turtle()
-head.speed(0)
-head.shape("square")
-head.color("#55D43F")
-head.penup()
-head.setpos(0, 0)
-head.direction = "stop"
-
-# Snake food
-food = turtle.Turtle()
-food.speed(0)
-food.shape("turtle")
-colors = ['pink', 'red', 'blue', 'purple', 'orange', 'yellow']
-# food.color('white', random.choice(colors))
-food.color('#70B7BA')
-food.penup()
-food.goto(0, 100)
 
 
 # Functions
@@ -105,19 +110,21 @@ def go_right():
 
 # Keyboard bindings
 while True:
-    scheme = str.lower(pen.screen.textinput("Control scheme",
-                                            "What type of control scheme do you want to chose?\n"
-                                            "Type '1' for 'WASD' or\n"
-                                            "          '2' for 'Arrow'"))
+    scheme = pen.screen.numinput("Control scheme",
+                                 "What type of control scheme do you want to chose:\n"
+                                 "'1' for 'WASD'\n"
+                                 "'2' for 'Arrow'",
+                                 minval=1, maxval=2)
+    # print(scheme is float)
 
-    if scheme == "1":
+    if scheme == 1.0:
         up = "w"
         down = "s"
         left = "a"
         right = "d"
         print("You chose 'WASD' scheme")
         break
-    elif scheme == "2":
+    elif scheme == 2.0:
         up = "Up"
         down = "Down"
         left = "Left"
@@ -178,7 +185,7 @@ def print_score_table(points):
     time.sleep(5)
 
 
-def show_score(points):
+def print_score(points):
     pen.clear()
     pen.goto(0, 290)
     pen.write(f"Score: {points} High Score: {db.read_high_db()[0][0]}"
@@ -194,6 +201,7 @@ def write_score_to_db(points):
                                     f"Use less then 12 letters, please.")
 
         if name is None:
+            name = "No name"
             data_score = WriteDB(str(name), points)
             data_score.write_to_db()
             break
@@ -244,7 +252,7 @@ while True:
         goal = 10
 
         # Print clear score
-        show_score(score)
+        print_score(score)
 
         # Reset the delay
         delay = 0.1
@@ -296,7 +304,7 @@ while True:
         if score > high_score:
             high_score = score
 
-        show_score(score)
+        print_score(score)
 
     # Move the end segments first in reverse order
     for index in range(len(segments) - 1, 0, -1):
@@ -337,7 +345,7 @@ while True:
             goal = 10
 
             # Print clear score
-            show_score(score)
+            print_score(score)
 
             # Reset the delay
             delay = 0.1
